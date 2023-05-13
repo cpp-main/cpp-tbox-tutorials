@@ -91,12 +91,18 @@ class MyModule : public tbox::main::Module {
     virtual void onCleanup() override { LogTag(); }
 };
 ```
-我们给`MyModule`类添加了`onInit()`,`onStart()`,`onStop()`,`onCleanup()`四个虚函数。并在每个虚函数中添加`LogTag()`打印日志。  
+我们重写了`MyModule`类的四个虚函数：`onInit()`,`onStart()`,`onStop()`,`onCleanup()`。并在每个虚函数中都添加了`LogTag()`日志打印。  
+为了能使用`LogTag()`日志打印函数，我们需要添加`#include <tbox/base/log.h>`
 
 [代码](02-your-first-module)  
+在编译的时间，会看到编译警告：
+![没有指定LOG\_MODULE\_ID警告]()
+它是在说我们程序没有指定日志的模块名。我们可以忽略它，也可以在`CXXFLAGS`中添加`-DLOG_MODULE_ID='"demo"'` 进行指定。  
+再编译执行效果：
+![运行效果图](images/)  
 
-编译执行效果：
-[运行效果图](images/)  
+可以看到，上面的 LogTag() 执行顺序正是`onInit()`,`onStart()`,`onStop()`,`onCleanup()`。
+在真实的项目中，就在重写 `tbox::main::Module` 中定义的虚函数与构造函数、析构函数来实现模块的功能的。
 
 
 有读者会问：我看到上面有 `new MyModule(ctx)`，但我没有看到有对它的`delete`语句，是忘了写吗？  

@@ -4,6 +4,9 @@
 您可以通过下面一个个的教程逐步掌握 cpp-tbox 的使用。  
 
 ## 第一个程序
+
+[示例代码](00-first-demo)
+
 创建自己的工程目录,创建 Makefile。
 
 Makefile

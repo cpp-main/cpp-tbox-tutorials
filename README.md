@@ -52,8 +52,55 @@ WARN: filelog init fail
 它希望开发者自己去定义一个自己的模块，如 `YourApp`（名字开发者自己取），然后按上面的方式注册到 tbox.main 框架上。  
 接下来，我们按第一个课程的提示，编写自己的 `Module`。
 
-创建 app_main.cpp，内容如下：
+创建 app\_main.cpp，内容如下：
+```
+#include <tbox/main/module.h>
 
+class MyModule : public tbox::main::Module {
+  public:
+    explicit MyModule(tbox::main::Context &ctx) : tbox::main::Module("my", ctx) {}
+};
+
+namespace tbox {
+namespace main {
+void RegisterApps(Module &apps, Context &ctx) {
+  apps.add(new MyModule(ctx));
+}
+}
+}
+```
+然后再修改 Makefile，将 app\_main.cpp 加入到源文件中，见[Makefile](01-your-first-module/Makefile)  
+
+[代码](01-your-first-module)
+
+编译执行：`make && ./demo`，运行结果：
+[运行效果图](images/)  
+这次可以看到，它没有再打印之前的提示了。
+
+但是，它也没有体现我们 `MyModule` 的任务行为。  
+接下来，我们再往 `MyModule` 中添加自定义的功能。  
+```
+class MyModule : public tbox::main::Module {
+  public:
+    explicit MyModule(tbox::main::Context &ctx) : tbox::main::Module("my", ctx) { }
+    virtual ~MyModule() { }
+
+    virtual bool onInit() override { LogTag(); }
+    virtual bool onStart() override { LogTag(); }
+    virtual void onStop() override { LogTag(); }
+    virtual void onCleanup() override { LogTag(); }
+};
+```
+我们给`MyModule`类添加了`onInit()`,`onStart()`,`onStop()`,`onCleanup()`四个虚函数。并在每个虚函数中添加`LogTag()`打印日志。  
+
+[代码](02-your-first-module)  
+
+编译执行效果：
+[运行效果图](images/)  
+
+
+有读者会问：我看到上面有 `new MyModule(ctx)`，但我没有看到有对它的`delete`语句，是忘了写吗？  
+答：tbox.main 架框会自己管理已注册`tbox::main::Module`派生类的生命期，一旦它被`add()`上去了，它的生命期就不需要开发者操心。
 
 ## 完善应用信息
 

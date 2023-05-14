@@ -7,20 +7,10 @@ class MyModule : public tbox::main::Module {
     virtual ~MyModule() { }
 
   public:
-    virtual bool onInit(const tbox::Json &js) override {
-      LogTag();
-      return true;
-    }
-    virtual bool onStart() override {
-      LogTag();
-      return true;
-    }
-    virtual void onStop() override {
-      LogTag();
-    }
-    virtual void onCleanup() override {
-      LogTag();
-    }
+    virtual bool onInit(const tbox::Json &js) override { LogTag(); return true; }
+    virtual bool onStart() override { LogTag(); return true; }
+    virtual void onStop() override { LogTag(); }
+    virtual void onCleanup() override { LogTag(); }
 };
 
 namespace tbox {

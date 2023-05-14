@@ -7,7 +7,7 @@
 
 ## 第一个程序
 
-创建自己的工程目录 00-first-demo，再在该目录下创建 Makefile 文件，内容如下：
+创建自己的工程目录 00-first-demo,再在该目录下创建 Makefile 文件,内容如下:
 ```
 TARGET:=demo
 
@@ -24,35 +24,18 @@ $(TARGET):
 然后执行 `make && ./demo`,效果:
 ![执行效果](images/000-first-demo.png)
 
-你可以看到，你的第一个程序就这么运行起来了。虽然你什么代码都没有写，但它 tbox.main 框架自身是可以运行的。就像是一个只有火车头，没有车厢的火车一样。  
+按 ctrl+c 可以正常退出程序。
+
+你可以看到,你的第一个程序就这么运行起来了。虽然你什么代码都没有写,但它 tbox.main 框架自身是可以运行的。就像是一个只有火车头,没有车厢的火车一样。  
 
 ## 写一个自己的 Module
 
-如果你很细心，你会发现上面的程序在运行之前有一堆提示：
-```
-WARN: You should implement tbox::main::RegisterApps().
-Exp:
+如果你很细心,你会发现上面的程序在运行之前有一堆提示:
+![](images/001-first-demo-tips.png)  
+这就是 tbox.main 框架在运行时,发现它没有任何可以运行的负载,于是向开发者打印了提示。它希望开发者自己去定义一个自己的模块,如 `YourApp`(名字开发者自己取),然后按上面的方式注册到 tbox.main 框架上。  
+接下来,我们按第一个课程的提示,编写自己的 `Module`。
 
-#include <tbox/main/main.h>
-#include "your_app.h"
-
-namespace tbox {
-namespace main {
-void RegisterApps(Module &apps, Context &ctx)
-{
-    apps.add(new YourApp(ctx));
-}
-}
-}
-
-Err: create director /var/log/00_demo fail.
-WARN: filelog init fail
-```
-这就是 tbox.main 框架在运行时，发现它没有任何可以运行的负载，于是向开发者打印了提示。  
-它希望开发者自己去定义一个自己的模块，如 `YourApp`（名字开发者自己取），然后按上面的方式注册到 tbox.main 框架上。  
-接下来，我们按第一个课程的提示，编写自己的 `Module`。
-
-创建 app\_main.cpp，内容如下：
+创建 app\_main.cpp,内容如下:
 ```
 #include <tbox/main/module.h>
 
@@ -69,16 +52,16 @@ void RegisterApps(Module &apps, Context &ctx) {
 }
 }
 ```
-然后再修改 Makefile，将 app\_main.cpp 加入到源文件中，见[Makefile](01-your-first-module/Makefile)  
+然后再修改 Makefile,将 app\_main.cpp 加入到源文件中,见[Makefile](01-your-first-module/Makefile)  
 
 [示例工程目录](01-your-first-module)  
 
-编译执行：`make && ./demo`，运行结果：
-[运行效果图](images/)  
-这次可以看到，它没有再打印之前的提示了。
+编译执行:`make && ./demo`,运行结果:
+[运行效果图](images/002-your-first-module-1.png)  
+这次可以看到,它没有再打印之前的提示了。
 
-但是，它也没有体现我们 `MyModule` 的任务行为。  
-接下来，我们再往 `MyModule` 中添加自定义的功能。  
+但是,它也没有体现我们 `MyModule` 的任务行为。  
+接下来,我们再往 `MyModule` 中添加自定义的功能。  
 ```
 class MyModule : public tbox::main::Module {
   public:
@@ -91,24 +74,24 @@ class MyModule : public tbox::main::Module {
     virtual void onCleanup() override { LogTag(); }
 };
 ```
-我们重写了`MyModule`类的四个虚函数：`onInit()`,`onStart()`,`onStop()`,`onCleanup()`。并在每个虚函数中都添加了`LogTag()`日志打印。  
-为了能使用`LogTag()`日志打印函数，我们需要添加`#include <tbox/base/log.h>`
+我们重写了`MyModule`类的四个虚函数:`onInit()`,`onStart()`,`onStop()`,`onCleanup()`。并在每个虚函数中都添加了`LogTag()`日志打印。  
+为了能使用`LogTag()`日志打印函数,我们需要添加`#include <tbox/base/log.h>`
 
 [示例工程目录](02-your-first-module)  
 
-在编译的时间，会看到编译警告：  
+在编译的时间,会看到编译警告:  
 ![没有指定LOG\_MODULE\_ID警告](images/001-compile-warn.png)  
-它是在说我们程序没有指定日志的模块名。我们可以忽略它，也可以在`CXXFLAGS`中添加`-DLOG_MODULE_ID='"demo"'` 进行指定。  
+它是在说我们程序没有指定日志的模块名。我们可以忽略它,也可以在`CXXFLAGS`中添加`-DLOG_MODULE_ID='"demo"'` 进行指定。  
 
-再编译执行效果：  
-![运行效果图](images/002-your-first-module-run.png)    
+再编译执行效果:  
+![运行效果图](images/003-your-first-module-with-log.png)    
 
-可以看到，上面的 LogTag() 执行顺序正是`onInit()`,`onStart()`,`onStop()`,`onCleanup()`。
-在真实的项目中，就在重写 `tbox::main::Module` 中定义的虚函数与构造函数、析构函数来实现模块的功能的。
+可以看到,上面的 LogTag() 执行顺序正是`onInit()`,`onStart()`,`onStop()`,`onCleanup()`。
+在真实的项目中,就在重写 `tbox::main::Module` 中定义的虚函数与构造函数、析构函数来实现模块的功能的。
 
 
-有读者会问：我看到上面有 `new MyModule(ctx)`，但我没有看到有对它的`delete`语句，是忘了写吗？  
-答：tbox.main 架框会自己管理已注册`tbox::main::Module`派生类的生命期，一旦它被`add()`上去了，它的生命期就不需要开发者操心。
+有读者会问:我看到上面有 `new MyModule(ctx)`,但我没有看到有对它的`delete`语句,是忘了写吗?  
+答:tbox.main 架框会自己管理已注册`tbox::main::Module`派生类的生命期,一旦它被`add()`上去了,它的生命期就不需要开发者操心。
 
 ## 完善应用信息
 

@@ -8,7 +8,7 @@
 ## 第一个程序
 
 创建自己的工程目录 00-first-demo,再在该目录下创建 Makefile 文件,内容如下:
-```
+```Makefile
 TARGET:=demo
 
 CXXFLAGS:=-I$(HOME)/.tbox/include
@@ -36,7 +36,7 @@ $(TARGET):
 接下来,我们按第一个课程的提示,编写自己的 `Module`。
 
 创建 app\_main.cpp,内容如下:
-```
+```c++
 #include <tbox/main/module.h>
 
 class MyModule : public tbox::main::Module {
@@ -62,7 +62,7 @@ void RegisterApps(Module &apps, Context &ctx) {
 
 但是,它也没有体现我们 `MyModule` 的任务行为。  
 接下来,我们再往 `MyModule` 中添加自定义的功能。  
-```
+```c++
 class MyModule : public tbox::main::Module {
   public:
     explicit MyModule(tbox::main::Context &ctx) : tbox::main::Module("my", ctx) { }
@@ -80,15 +80,15 @@ class MyModule : public tbox::main::Module {
 [示例工程目录](02-your-first-module)  
 
 在编译的时间,会看到编译警告:  
-![没有指定LOG\_MODULE\_ID警告](images/001-compile-warn.png)  
+![没有指定LOG\_MODULE\_ID警告](images/004-compile-warn.png)  
 它是在说我们程序没有指定日志的模块名。我们可以忽略它,也可以在`CXXFLAGS`中添加`-DLOG_MODULE_ID='"demo"'` 进行指定。  
 
 再编译执行效果:  
 ![运行效果图](images/003-your-first-module-with-log.png)    
 
 可以看到,上面的 LogTag() 执行顺序正是`onInit()`,`onStart()`,`onStop()`,`onCleanup()`。
-在真实的项目中,就在重写 `tbox::main::Module` 中定义的虚函数与构造函数、析构函数来实现模块的功能的。
-
+在真实的项目中,就在重写 `tbox::main::Module` 中定义的虚函数与构造函数、析构函数来实现模块的功能的。  
+那么它们分别有些什么不同呢?详见 [cpp-tbox/module/main/module.h](https://gitee.com/cpp-master/cpp-tbox/blob/master/modules/main/module.h)。  
 
 有读者会问:我看到上面有 `new MyModule(ctx)`,但我没有看到有对它的`delete`语句,是忘了写吗?  
 答:tbox.main 架框会自己管理已注册`tbox::main::Module`派生类的生命期,一旦它被`add()`上去了,它的生命期就不需要开发者操心。

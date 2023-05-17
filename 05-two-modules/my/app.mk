@@ -1,0 +1,1 @@
+OBJECTS+=my/module.o

@@ -63,7 +63,7 @@ void RegisterApps(Module &apps, Context &ctx) {
 见[Makefile](01-first-module/Makefile)  
 
 编译执行:`make && ./demo`，运行结果:  
-[运行效果图](images/002-your-first-module-1.png)   
+![运行效果图](images/002-your-first-module-1.png)   
 这次可以看到，它没有再打印之前的提示了。说明我们写的`MyModule`已注册到了 tbox.main 中了。
 
 但是，单从日志上看，我们并不能看出我们写的 MyModule 有真的运行起来。  
@@ -128,7 +128,7 @@ class MyModule : public tbox::main::Module {
 ## 正规的工程结构
 上面的示例尽可能简单，以方便读者理解。在真正的项目开发中，建议您将 `app_main.cpp` 进行简单地拆分；  
 
-- 将 `GetAppBuildTime()` 函数放到单独的文件中 build.cpp，在 Makefile中保证每次构建，它都会被重新编译，以确保这个函数返回的时间与构建的时间一致。
+- 将 `GetAppBuildTime()` 函数放到单独的文件中 build.cpp，在 Makefile 中保证每次构建，它都会被重新编译，以确保这个函数返回的时间与构建的时间一致。
 - 将 `GetAppVersion()`, `GetAppDescribe()` 放置在 `info.cpp` 中；
 - 将 `RegisterApps()` 放置在 `apps.cpp` 中；
 - 创建你自己的应用目录，存放自定义的 `Module` 的实现。
@@ -136,24 +136,36 @@ class MyModule : public tbox::main::Module {
 最终产生文件结构：  
 ```
 .
-├── apps.cpp
-├── build.cpp
-├── info.cpp
+├── apps.cpp    # 定义 RegisterApps()
+├── build.cpp   # 定义 GetAppBuildTime()
+├── info.cpp    # 定义 GetAppVersion(), GetAppDescribe()
 ├── Makefile
-└── my
+└── my          # 业务相关Module实现
     ├── app.mk
     ├── module.cpp
     └── module.h
 ```
+
 [示例工程目录](04-normal-app-demo)
+
+建义：在 my/ 目录下的所有代码，均以 `my` 作为顶层命名空间，以防在下一节的多Module情况下，命名空间污染。  
 
 ## 一个进程同时运行多个Module
 之前有提过：tbox.main 就像一个火车头。它可以像第一个示例所展示的那样，不带负载运行，也可以像上面一个示例所展示的那样，带负载运行。本小节将告诉你的是：它可以同时带多个负载运行。也就是说：一个 tbox.main 框架，可以同时将多个毫不相关的业务Module运行在一个进程里，就像是一个火车头可同时拉多节车相一样。
 
 怎么实现呢？
-上一小节中，tbox.main 只有一个模块my。在此基础上，我们再加一个your模块。
+上一小节中，tbox.main 只有一个模块my。在此基础上，我们再加一个your模块。  
 
-工程文件结构如下：  
+步骤：  
+
+1. 将 my 目录复制为 your；
+2. 进入 your，修改 module.cpp 与 module.h 将命名空间由 `my` 改成 `your`；
+3. 打开 your/app.mk，将所有的 `my` 改成 `your`；
+4. 打开 Makefile，在 `include my/app.mk` 下面添加 `include your/app.mk`；
+5. 打开 apps.cpp，将所有`my`相关的都复制一份命名为`your`。
+![对apps.cpp的修改](/api/file/getImage?fileId=6466ce63e138230705000295)  
+
+最后工程文件结构如下：  
 ```
 ├── apps.cpp
 ├── build.cpp
@@ -170,6 +182,9 @@ class MyModule : public tbox::main::Module {
 ```
 
 [示例工程目录](05-two-modules)
+
+构建后运行：  
+![多Module在同一进程运行效果](/api/file/getImage?fileId=6466ccfae138230705000294)
 
 ## 日志的打印
 

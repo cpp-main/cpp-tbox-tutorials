@@ -114,7 +114,7 @@ class MyModule : public tbox::main::Module {
 
 ## 完善应用信息
 上面，我们通过定义一个`MyModule`类，并重写其虚函数，实现了我们一个简单的应用。但仅仅是这么做是不完成的。  
-当我们执行：`./demo -h` 时，当我们执行：`./demo -v` 或 `./demo --version` 时看到： 
+当我们执行：`./demo -h` 时，当我们执行：`./demo -v` 或 `./demo --version` 时看到：  
 ![无应用信息](/api/file/getImage?fileId=6464fb8de13823070500028b)  
 这是因为，我们并没有对当前程序的描述、版本进行描述。
 那怎么做呢？我们可以通过在 app\_main.cpp 文件中加如下红框中的代码完善它：  
@@ -162,7 +162,7 @@ class MyModule : public tbox::main::Module {
 2. 进入 your，修改 module.cpp 与 module.h 将命名空间由 `my` 改成 `your`；
 3. 打开 your/app.mk，将所有的 `my` 改成 `your`；
 4. 打开 Makefile，在 `include my/app.mk` 下面添加 `include your/app.mk`；
-5. 打开 apps.cpp，将所有`my`相关的都复制一份命名为`your`。
+5. 打开 apps.cpp，将所有`my`相关的都复制一份命名为`your`。  
 ![对apps.cpp的修改](/api/file/getImage?fileId=6466ce63e138230705000295)  
 
 最后工程文件结构如下：  

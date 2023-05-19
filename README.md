@@ -115,15 +115,15 @@ class MyModule : public tbox::main::Module {
 ## 完善应用信息
 上面，我们通过定义一个`MyModule`类，并重写其虚函数，实现了我们一个简单的应用。但仅仅是这么做是不完成的。  
 当我们执行：`./demo -h` 时，当我们执行：`./demo -v` 或 `./demo --version` 时看到：  
-![无应用信息](/api/file/getImage?fileId=6464fb8de13823070500028b)  
+![无应用信息](images/005-no-desc.png)  
 这是因为，我们并没有对当前程序的描述、版本进行描述。
 那怎么做呢？我们可以通过在 app\_main.cpp 文件中加如下红框中的代码完善它：  
-![添加代码](/api/file/getImage?fileId=6464ff45e13823070500028c)  
+![添加代码](images/006-add-code.png)  
 上面定义了三个函数：`GetAppDescribe()`、`GetAppVersion()`、`GetAppBuildTime()`，分析用于告析 tbox.main 框架当前应用的描述、版本号、编译时间点。  
 [完整示例代码](03-add-app-info)
 
 重新构建，再次执行 `./demo -v; ./demo -h` 效果：  
-![](/api/file/getImage?fileId=646508d7e13823070500028d)
+![](images/007-has-desc.png)
 
 ## 正规的工程结构
 上面的示例尽可能简单，以方便读者理解。在真正的项目开发中，建议您将 `app_main.cpp` 进行简单地拆分；  
@@ -163,7 +163,7 @@ class MyModule : public tbox::main::Module {
 3. 打开 your/app.mk，将所有的 `my` 改成 `your`；
 4. 打开 Makefile，在 `include my/app.mk` 下面添加 `include your/app.mk`；
 5. 打开 apps.cpp，将所有`my`相关的都复制一份命名为`your`。  
-![对apps.cpp的修改](/api/file/getImage?fileId=6466ce63e138230705000295)  
+![对apps.cpp的修改](images/008-modify-apps.png)  
 
 最后工程文件结构如下：  
 ```
@@ -184,7 +184,7 @@ class MyModule : public tbox::main::Module {
 [示例工程目录](05-two-modules)
 
 构建后运行：  
-![多Module在同一进程运行效果](/api/file/getImage?fileId=6466ccfae138230705000294)
+![多Module在同一进程运行效果](images/009-two-modules.png)
 
 ## 日志的打印
 

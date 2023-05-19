@@ -1,7 +1,7 @@
 TARGET:=demo
 
 OBJECTS:= \
-	app_main.o \
+	apps.o \
 	build.o \
 	info.o
 

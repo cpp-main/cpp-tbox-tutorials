@@ -144,6 +144,8 @@ class MyModule : public tbox::main::Module {
 |LogUndo(...)|NOTICE|标记有未实现的功能，通用创建一个空函数时，就会放置一个LogUndo()|
 |LogTag()|TRACE|用于打印运行标记，观察程序有没有运行过标记位置|
 
+详见 [log.h](https://gitee.com/cpp-master/cpp-tbox/blob/master/modules/base/log.h)
+
 下面，我们来实际操作一下。
 
 ## 参数系统

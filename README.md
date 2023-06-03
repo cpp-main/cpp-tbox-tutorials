@@ -134,15 +134,17 @@ class MyModule : public tbox::main::Module {
 日志打印函数有：  
 |函数|等级|用途|
 |:-|:-|:-|
-|LogFatal(...)|FATAL|打印程序代码级的错误，比如：程序崩馈，通常不会使用到|
-|LogErr(...)|ERROR|打印导致业务完全不可用的严重错误。区别于FATAL，指的是非程序级错误，比如配置文件打不开|
-|LogWarn(...)|WARN|打印影响部分功能的错误。区别于ERROR，这种错误不整响主要功能|
-|LogNotice(...)|NOTICE|打印外部因素引起的轻微异常，这种异常不会影响功能，但需要注意。如对方的协议格式错误、版本不一致|
-|LogInfo(...)|INFO|打印与外部交互的信息，用于鉴别问题是外部的，还是内部的|
-|LogDbg(...)|DEBUG|打印内部模块之间的信息，用于鉴别问题是属于内部的哪个模块的|
-|LogTrace(...)|TRACE|打印临时查问题所需的日志信息|
-|LogUndo()|NOTICE|标记有未实现的功能，通用创建一个空函数时，就会放置一个LogUndo()|
-|LogTag()|TRACE|用于打印运行标记，观察程序有没有运行过标记位置|
+|`LogFatal(fmt,...)`|FATAL|打印程序代码级的错误，比如：程序崩馈，通常不会使用到|
+|`LogErr(fmt,...)`|ERROR|打印导致业务完全不可用的严重错误。区别于FATAL，指的是非程序级错误，比如配置文件打不开|
+|`LogWarn(fmt,...)`|WARN|打印影响部分功能的错误。区别于ERROR，这种错误不整响主要功能|
+|`LogNotice(fmt,...)`|NOTICE|打印外部因素引起的轻微异常，这种异常不会影响功能，但需要注意。如对方的协议格式错误、版本不一致|
+|`LogInfo(fmt,...)`|INFO|打印与外部交互的信息，用于鉴别问题是外部的，还是内部的|
+|`LogDbg(fmt,...)`|DEBUG|打印内部模块之间的信息，用于鉴别问题是属于内部的哪个模块的|
+|`LogTrace(fmt,...)`|TRACE|打印临时查问题所需的日志信息|
+|`LogUndo()`|NOTICE|标记有未实现的功能，通用创建一个空函数时，就会放置一个LogUndo()|
+|`LogTag()`|TRACE|用于打印运行标记，观察程序有没有运行过标记位置|
+|`LogPrintf(level,fmt,...)`||在参数中指定等级打印格式化日志|
+|`LogPuts(level,text)`||在参数中指定等级打印字符串日志|
 
 详见 [log.h](https://gitee.com/cpp-master/cpp-tbox/blob/master/modules/base/log.h)
 
@@ -153,6 +155,20 @@ class MyModule : public tbox::main::Module {
 
 编译执行效果：  
 ![日志打印效果](images/011-log-print.png)
+
+只要运行，我们就能在终端上就可以看到日志打印了。  
+与常规的日志打印一样，一条日志记录打印一行。每一条记录都有以下信息：  
+![日志字段](images/013-log-field.png)
+
+Q: 日志除了打印到终端，还能输出到别的地方吗？  
+A：日志系统有三种输出方式：stdout(终端)、syslog、file。在不指定的情况下，默认只输出到stdout。如果需要，可以通过参数分别对这三种输出方式进行配置。这个后面讲参数的时候详细介绍。
+
+## IO事件
+### 写一个终端交互服务
+
+## 定时器事件
+
+## 信号事件
 
 ## 参数系统
 ### 内置参数说明
@@ -176,14 +192,6 @@ class MyModule : public tbox::main::Module {
 ## 运行时异常捕获功能
 
 ## 多层级Module
-
-## IO事件
-### 写一个终端交互服务
-
-## 定时器事件
-
-
-## 信号事件
 
 ## HTTP模块
 

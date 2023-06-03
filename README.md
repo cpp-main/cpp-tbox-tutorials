@@ -160,7 +160,7 @@ class MyModule : public tbox::main::Module {
         LogWarn("this is warn log");
         LogNotice("this is notice log");
         LogInfo("this is info log");
-        LogDbg("this is info log");
+        LogDbg("this is debug log");
         LogTrace("this is trace log");
         LogUndo();
         LogTag();

@@ -146,28 +146,8 @@ class MyModule : public tbox::main::Module {
 
 详见 [log.h](https://gitee.com/cpp-master/cpp-tbox/blob/master/modules/base/log.h)
 
-下面，我们来实际操作一下，在MyModule的onInit()尝试所有的日志打印函数，观察其效果：  
-```c++
-class MyModule : public tbox::main::Module {
-  public:
-    explicit MyModule(tbox::main::Context &ctx) : tbox::main::Module("my", ctx) { }
-    virtual ~MyModule() { }
-
-  public:
-    virtual bool onInit(const tbox::Json &js) override {
-        LogFatal("this is fatal log");
-        LogErr("this is error log");
-        LogWarn("this is warn log");
-        LogNotice("this is notice log");
-        LogInfo("this is info log");
-        LogDbg("this is debug log");
-        LogTrace("this is trace log");
-        LogUndo();
-        LogTag();
-        return true;
-    }
-};
-```
+下面，我们来实际操作一下，在MyModule的onInit()尝试所有的日志打印函数：  
+![](images/012-log-print-code.png)
 
 [示例工程目录](06-log-print/)  
 

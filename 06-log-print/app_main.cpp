@@ -13,10 +13,14 @@ class MyModule : public tbox::main::Module {
         LogWarn("this is warn log");
         LogNotice("this is notice log");
         LogInfo("this is info log");
-        LogDbg("this is info log");
+        LogDbg("this is debug log");
         LogTrace("this is trace log");
         LogUndo();
         LogTag();
+
+        LogTrace("format, %d, %s, %.3f", 12, "hello, cpp-tbox!", 0.2345);
+        LogPrintf(LOG_LEVEL_NOTICE, "%s", "LogPrintf()");
+        LogPuts(LOG_LEVEL_INFO, "LogPuts()");
         return true;
     }
 };

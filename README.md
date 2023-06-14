@@ -182,8 +182,7 @@ Reactor线程就像是一个银行的办事柜台。如果遇到很轻松就能�
 
 在 tbox.main 框架编程中，一切都是基于事件驱动的。具体操作就是：向Reactor注册某个事件的回调函数。当该事件发生了，Reactor就会回调之前注册的函数。  
 这种模型对注册的回调函数有三个基本的要求：**不要阻塞！不要阻塞！不要阻塞！**。  
-大家可以拜读一下 Node.js 的官方文档《[不要在事件循环中阻塞](https://nodejs.org/zh-cn/docs/guides/dont-block-the-event-loop)》  
-咱们的 cpp-tbox 与 Node.js 的机制是一样的，原理也是相通的。
+大家可以拜读一下 Node.js 的官方文档《[不要阻塞事件循环](https://nodejs.org/zh-cn/docs/guides/dont-block-the-event-loop)》，咱们的 cpp-tbox 与 Node.js 的机制是一样的，原理也是相通的。
 
 基于这个要求：
 

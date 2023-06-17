@@ -15,7 +15,7 @@ class MyModule : public tbox::main::Module {
     { }
 
     virtual ~MyModule() {
-        delete fd_event_;
+        delete fd_event_;   //! 释放FdEvent对象
         delete tick_timer_;
     }
 

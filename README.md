@@ -260,8 +260,15 @@ Reactor线程就像是一个银行的办事柜台。如果遇到很轻松就能�
 ![构建http模块](images/022-compile-http-module.png)  
 看到上面的输出，表示构建完成。接下来就可以使用 http 模块了。
 
-为了演示，我们写一个非常简单的http服务程序，当我们访问它的时候，显示主页`hello tbox.http`。  
+为了演示，我们写一个非常简单的http服务程序，当我们访问它的时候，显示hello页面。  
 
+![http代码](images/023-tiny-http-code.png)  
+
+编译执行，使用 curl 测试，结果如下：  
+![http结果](images/024-tiny-http-result.png)
+![http结果](images/025-tiny-http-result.gif)
+
+[示例程序目录](10-tiny-http-server)
 
 ## 参数系统
 ### 内置参数说明
@@ -285,8 +292,6 @@ Reactor线程就像是一个银行的办事柜台。如果遇到很轻松就能�
 ## 运行时异常捕获功能
 
 ## 多层级Module
-
-## HTTP模块
 
 ## 使用TcpServer模块写一个echo服务
 

@@ -213,7 +213,7 @@ Reactor线程就像是一个银行的办事柜台。如果遇到很轻松就能�
 (8) 在 `onStart()` 中启动定时器；  
 (9) 在 `onStop()` 中停止定时器；  
 
-[示例工程目录](07-timer/)  
+[示例工程目录](07-timer-event)  
 
 编译后，执行效果：
 ![](images/015-timer-result.png)  
@@ -231,19 +231,24 @@ Reactor线程就像是一个银行的办事柜台。如果遇到很轻松就能�
 问：那开一个线程专门负责读终端的终入，将去控制定时器行不行呢？答：这也不是不行，只是这样就需要额外开一个线程了。  
 这里，我们采用另一种更优的方案：创建一个stdin的文件描述符的`FdEvent`，令其监听stdin的可读事件。当stdin可读时，就调用`read(0,xx,yy)`将数据读出来，再处理。这样就不会阻塞了。  
 如下更改：  
-![代码](images/016-fdevent-ctrl-timer-code.png)  
+![代码](images/016-fdevent-code.png)  
 在(9)处定义了接收到stdin输入的处理过程。首先，检查一下是不是可读事件，如果是才处理。然后读0文件描述符，即stdin。将数据读到`buff`缓冲中。最后，根据输入的内容进行处理。
 
-[示例工程目录](08-basic-fdevent-ctrl-timer)
+[示例工程目录](08-fd-event)
 
 编译执行效果：  
-![结果](images/017-fdevent-ctrl-timer-result.png)
+![结果](images/017-fdevent-result.png)  
 
 ## 信号事件
 写了Linux程序的同学都知道，当我们在终端按下ctrl+c的时候，系统会向进程序发送一个SIGINT的信号。如果我们在程序中`signal(SIGINT, xxxx)`注册了信号处理函数，那么该函数就会被调用。这种直接调`signal()`函数注册信号回调的方法其实是很不安全的。具体原因，网上有很多文章进行过阐述。在此就不在赘述。  
 为了在tbox中能安全地使用信号，我为tbox中实现了另一种事件SignalEvent。使用它在tbox.main框架中注册信号回调是安全的。  
 
-为了演示信号的使用，接下来，我们在定时器示例的基础上进行修改。当程序接收到信号USR1时停止定时器，当接收到信号USR2时启用定时器。
+接下来，为了演示信号的使用，我们在定时器示例的基础上进行修改。当程序接收到信号USR1时停止定时器，当接收到信号USR2时启用定时器。  
+代码如下：  
+![代码](images/018-signal-event-code.png)
+
+编译执行效果：  
+![执行效果](images/020-signal-event-result.png)
 
 ## 一个HTTP服务
 上面，我们分别演示了定时器事件`TimerEvent`、文件描述符事件`FdEvent`，以及信号事件`SignalEvent`的使用方式。然而，在真实的开发中，我们会优先使用tbox内部为我们实现的模块来实现我们的功能，比如：`TcpServer`, `TcpClient`, `Uart`, `BufferedFd`。这些模块的本质是在内部封装了对`TimerEvent`,`FdEvent`,`SignalEvent`的操作。  

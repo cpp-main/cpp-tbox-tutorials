@@ -265,8 +265,8 @@ Reactor线程就像是一个银行的办事柜台。如果遇到很轻松就能�
 ![http代码](images/023-tiny-http-code.png)  
 
 编译执行，使用 curl 测试，结果如下：  
-![http结果](images/024-tiny-http-result.png)
-![http结果](images/025-tiny-http-result.gif)
+![http结果](images/024-tiny-http-result.png)  
+![浏览器访问](images/025-tiny-http-result.gif)  
 
 [示例程序目录](10-tiny-http-server)
 

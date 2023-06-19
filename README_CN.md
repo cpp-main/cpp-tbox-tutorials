@@ -286,6 +286,9 @@ int main(int argc, char **argv) {
 在上面的http示例中，我们在 `onInit()` 中对http_server_对象进行了初始化，令其固定绑定 0.0.0.0 地址与12345端口，且backlog指定为2。将这些初始化参数写死在程序里不是一个好的主意。因为在真实的项目中，这些常常会变更。  
 接下来，我们将使用参数系统，将绑定地址与端口，还以backlog通过参数传入。  
 
+对 app_main.cpp 进行如下修改：  
+![parametes示例代码](images/026-parameters-code.png)
+
 ### 内置参数说明
 上面，我们认识到了参数系统的灵活性。除了我们自定义自己业务相关的参数，还有很多tbox.main内置的参数。我们可以通过修改它们来改变tbox.main的行为。
 

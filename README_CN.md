@@ -1,4 +1,4 @@
-![cpp-tbox-logo](images/logo-with-slogan.jpg)  
+![cpp-tbox-logo](images/logo-with-slogan.png)  
 
 # CppTbox 的入门教程
 

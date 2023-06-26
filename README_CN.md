@@ -289,7 +289,14 @@ int main(int argc, char **argv) {
 接下来，我们将使用参数系统，将绑定地址与端口，还以backlog通过参数传入。  
 
 对 app_main.cpp 进行如下修改：  
-![parametes示例代码](images/026-parameters-code.png)
+![parametes示例代码](images/026-parameters-code.png)  
+
+编译后，不带参数执行。发现与上面节的没有什么变化，还是绑定在 0.0.0.0:12345 端口上。  
+接下来，我们给这个程序带上参数进行执行：`./demo -s 'my_http.bind_addr="0.0.0.0:44444"'`  
+![parametes示例执行效果](images/027-parameter-result-1.png)  
+可见，HTTP服务的绑定端口变了，由之前的 12345 变成了 44444。这是为什么呢？  
+参数 `-s 'my_http.bind_addr="0.0.0.0:44444"'` 表示：设置 my_http.bind_addr 的参数值为 "0.0.0.0:44444"。于是，在 `MyModule::onInit()` 函数被执行时，所传入的js对象中存在"bind_addr"字段。它的值就是我们在执行参数中指定的 "0.0.0.0:44444"。  
+那为什么是 "my_http.bind_addr" 而不是 "abc.bind_addr"？因为在 L10 构造中，指定了 MyModule 的名称为 "my_http"。当然，我们可以取其它名称。  
 
 ### 内置参数说明
 上面，我们认识到了参数系统的灵活性。除了我们自定义自己业务相关的参数，还有很多tbox.main内置的参数。我们可以通过修改它们来改变tbox.main的行为。

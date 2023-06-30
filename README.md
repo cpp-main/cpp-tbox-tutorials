@@ -1,14 +1,16 @@
 ![cpp-tbox-logo](images/logo-with-slogan.png)  
 
+[[中文]](README_CN.md)
+
 # CppTbox 的入门教程
 
-本项目为 [cpp-tbox](https://gitee.com/cpp-master/cpp-tbox) 的入门教程。  
+本项目为 [cpp-tbox](https://github.com/cpp-main/cpp-tbox) 的入门教程。  
 您可以通过下面一个个的教程逐步掌握 cpp-tbox 的使用。  
 
 ## 准备工作
 下载与构建 cpp-tbox：
 ```
-git clone https://gitee.com/cpp-master/cpp-tbox.git
+git clone https://github.com/cpp-main/cpp-tbox.git
 cd cpp-tbox;
 make 3rd-party modules RELEASE=1 STAGING_DIR=$HOME/.tbox
 ```
@@ -111,7 +113,7 @@ class MyModule : public tbox::main::Module {
 | `onCleanup()` | 解除与其它模块之间的联系、保存文件，是 `onInit()` 的逆过程 |  |
 | 析构函数 | 释放资源、delete对象，是构造的逆过程 | 不要做有可能失败的行为。<br>如果有，放到 `onCleanup()` 去做 |
 
-至于为什么要设计这四种虚函数，以及它们之间的差别，详见 [cpp-tbox/module/main/module.h](https://gitee.com/cpp-master/cpp-tbox/blob/master/modules/main/module.h) 中的解析。  
+至于为什么要设计这四种虚函数，以及它们之间的差别，详见 [cpp-tbox/module/main/module.h](https://github.com/cpp-main/cpp-tbox/blob/master/modules/main/module.h) 中的解析。  
 
 Q：我看到上面有 `new MyModule(ctx)`，但我没有看到有对它的`delete`语句，是忘了写吗?  
 A：tbox.main 架框会自己管理已注册`tbox::main::Module`派生类的生命期，一旦它被`add()`上去了，它的生命期就不需要开发者操心。
@@ -148,7 +150,7 @@ A：tbox.main 架框会自己管理已注册`tbox::main::Module`派生类的生�
 |`LogPrintf(level,fmt,...)`||在参数中指定等级打印格式化日志|
 |`LogPuts(level,text)`||在参数中指定等级打印字符串日志|
 
-详见 [log.h](https://gitee.com/cpp-master/cpp-tbox/blob/master/modules/base/log.h)
+详见 [log.h](https://github.com/cpp-main/cpp-tbox/blob/master/modules/base/log.h)
 
 下面，我们来实际操作一下，在MyModule的onInit()尝试所有的日志打印函数：  
 ![](images/012-log-print-code.png)

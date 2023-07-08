@@ -2,7 +2,7 @@
 
 # CppTbox 的入门教程
 
-本项目为 [cpp-tbox](https://gitee.com/cpp-master/cpp-tbox) 的入门教程。  
+本项目为 [cpp-tbox](https://github.com/cpp-main/cpp-tbox) 的入门教程。  
 您可以通过下面一个个的教程逐步掌握 cpp-tbox 的使用。  
 
 ## 准备工作

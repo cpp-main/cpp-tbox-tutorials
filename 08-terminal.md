@@ -14,16 +14,19 @@
 方法三：创建HTTP服务，接收POST请求，执行某个函数，将结果以回复的形式返回；  
 
 在没有 terminal 之前，我使用最多的是方法二。每写一个程序，我都得建一张 cmd --> function 的表。一个命令对应一个函数。每当TCP接收到字串后，就从字串中提取出cmd与参数。再通过cmd从表中找出对应的 function，去执行对应的函数。  
-这样的交互并不那么友好。于是，我参考了 telnet 的交互协议，开发了 terminal 模块，并集成到了 tbox.main 框架中。从此 tbox.main 具体了调试终端的功能。
+这样的交互并不那么友好。于是，我参考了 telnet 的交互协议，开发了 terminal 模块，并集成到了 tbox.main 框架中。从此 tbox.main 具备了调试终端的功能。  
 ![](images/034-terminal-show.gif)  
 
 ## 使能终端
 默认情况下，命令终端并是关闭着的，需要我们通过参数将其打开：`./demo -s 'telnetd.bind="0.0.0.0:10000"'`  
 ![](images/034-enable-telnetd.png)  
-
 如上，我们在另一个窗口上执行 `telnet localhost 10000` 就能登陆上去。  
 如果机器上没有 telnet 命令，还可以使用 nc 命令替代。主要功能一样，仅仅在体验上没有上下切换历史命令的功能。  
 ![](images/035-use-nc-login-telnetd.png)  
+
+在 terminal 中有几个内置的命令，执行 help 命令可以看到：  
+![](images/036-terminal-help.png)  
+这些指令的功能与Linux对应的命令类似。最常用的有：ls, cd, tree, exit。大家可以逐一尝试执行一下。
 
 ## 实现自定义命令
 

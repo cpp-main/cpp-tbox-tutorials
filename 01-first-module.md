@@ -1,5 +1,11 @@
 # 写一个自己的 Module
 
+如果你很细心，你会发现上面的程序在运行之前有一堆提示:  
+![](images/001-first-demo-tips.png)  
+这是 tbox.main 框架在运行时，发现它没有任何可以运行的负载，向开发者打印的提示。  
+它希望开发者自己去定义一个自己的模块，如 `YourApp`(名字开发者自己取)，然后按上面的方式注册到 tbox.main 框架上。  
+接下来，我们按第一个课程的提示，编写自己的 `Module`。  
+
 创建 app\_main.cpp 文件，内容如下:  
 ```c++
 #include <tbox/main/module.h>

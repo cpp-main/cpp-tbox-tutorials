@@ -79,4 +79,5 @@ class MyModule : public tbox::main::Module {
 Q：我看到上面有 `new MyModule(ctx)`，但我没有看到有对它的`delete`语句，是忘了写吗?  
 A：tbox.main 架框会自己管理已注册`tbox::main::Module`派生类的生命期，一旦它被`add()`上去了，它的生命期就不需要开发者操心。
 
-
+-------
+[[返回主页]](README.md)

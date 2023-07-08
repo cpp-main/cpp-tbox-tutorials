@@ -16,7 +16,8 @@ make 3rd-party modules RELEASE=1 STAGING_DIR=$HOME/.tbox
 ![导出的文件](images/010-tbox.png)
 
 ## 第一个程序
-[点击前往](01-first-demo.md)
+在准备工作完成之后，我们可以开始编写基于tbox.main框架的程序了。  
+[点击前往](00-first-demo.md)
 
 ## 写一个自己的 Module
 如果你很细心，你会发现上面的程序在运行之前有一堆提示:  
@@ -24,129 +25,11 @@ make 3rd-party modules RELEASE=1 STAGING_DIR=$HOME/.tbox
 这是 tbox.main 框架在运行时，发现它没有任何可以运行的负载，向开发者打印的提示。  
 它希望开发者自己去定义一个自己的模块，如 `YourApp`(名字开发者自己取)，然后按上面的方式注册到 tbox.main 框架上。  
 接下来，我们按第一个课程的提示，编写自己的 `Module`。
-
-创建 app\_main.cpp 文件，内容如下:  
-```c++
-#include <tbox/main/module.h>
-
-class MyModule : public tbox::main::Module {
-  public:
-    explicit MyModule(tbox::main::Context &ctx) : tbox::main::Module("my", ctx) {}
-};
-
-namespace tbox {
-namespace main {
-void RegisterApps(Module &apps, Context &ctx) {
-  apps.add(new MyModule(ctx));
-}
-}
-}
-```
-然后再修改 Makefile，将 app\_main.cpp 加入到源文件中。  
-见：[Makefile](01-first-module/Makefile)  
-
-[示例工程目录](01-first-module)  
-
-编译执行:`make && ./demo`，运行结果:  
-![运行效果图](images/002-your-first-module-1.png)   
-这次可以看到，它没有再打印之前的提示了。说明我们写的`MyModule`已经生效了。
-
-但是，单从日志上看，我们并不能看出我们写的 MyModule 有真的运行起来。  
-接下来，我们再往 `MyModule` 中添加自定义的功能。让它在运行的过程中打印一点日志。    
-
-[示例工程目录](02-first-module)  
-
-```c++
-class MyModule : public tbox::main::Module {
-  public:
-    explicit MyModule(tbox::main::Context &ctx) : tbox::main::Module("my", ctx) { }
-    virtual ~MyModule() { }
-
-    virtual bool onInit() override { LogTag(); }
-    virtual bool onStart() override { LogTag(); }
-    virtual void onStop() override { LogTag(); }
-    virtual void onCleanup() override { LogTag(); }
-};
-```
-
-我们重写了`MyModule`类的四个虚函数:`onInit()`，`onStart()`，`onStop()`，`onCleanup()`，并在每个虚函数中都添加了`LogTag()`日志打印。  
-为了能使用`LogTag()`日志打印函数，我们还需要添加`#include <tbox/base/log.h>`。  
-完成之后执行 `make`。在编译的时侯，我们看到了一条编译警告:   
-![没有指定LOG\_MODULE\_ID警告](images/004-compile-warn.png)  
-它是在说我们程序没有指定日志的模块名。这仅是一条警告，我们可以忽略它。不过，我建议你在 Makefile 的`CXXFLAGS`定义中添加`-DLOG_MODULE_ID='"demo"'` 进行定义。  
-
-编译后执行，然后按 ctrl+c 退出程序，完整的日志打印效果:  
-![运行效果图](images/003-your-first-module-with-log.png)    
-
-可以看到，上面的出现了几条紫色的日志，这正是 LogTag() 打印的。  
-在程序启动的时候，我们看到依次执行了`onInit()`与`onStart()`。在我们按 ctrl+c 时，程序退出时也依次执行了`onStop()`与`onCleanup()`。  
-在真实的项目中，我们就通过重写 `tbox::main::Module` 中定义的虚函数与构造函数、析构函数来实现模块的功能的。  
-我们需要在这些函数里实现什么功能呢?
-
-| 函数 | 要实现的行为 | 注意事项 |
-|:-|:-|:-|
-| 构造函数 | 初始化自身的成员变量，包括new对象 | 不要做可能失败的行为。<br/>如果有，放到 `onInit()` 去做 |
-| `onFillDefaultConfig()` | 往js对象中填写内容，填写本模块所需的默认参数 | 仅对 js 进行设置，不要做其它的事务 |
-| `onInit()` | 根据js对象传入的参数，进行初始化本模块、与其它的模块建立关系、加载文件等 | 
-| `onStart()` | 令模块开始工作 |  |
-| `onStop()` | 令模块停止工作，是 `onStart()` 的逆过程 |  |
-| `onCleanup()` | 解除与其它模块之间的联系、保存文件，是 `onInit()` 的逆过程 |  |
-| 析构函数 | 释放资源、delete对象，是构造的逆过程 | 不要做有可能失败的行为。<br>如果有，放到 `onCleanup()` 去做 |
-
-至于为什么要设计这四种虚函数，以及它们之间的差别，详见 [cpp-tbox/module/main/module.h](https://gitee.com/cpp-master/cpp-tbox/blob/master/modules/main/module.h) 中的解析。  
-
-Q：我看到上面有 `new MyModule(ctx)`，但我没有看到有对它的`delete`语句，是忘了写吗?  
-A：tbox.main 架框会自己管理已注册`tbox::main::Module`派生类的生命期，一旦它被`add()`上去了，它的生命期就不需要开发者操心。
+[点击前往](01-first-module.md)
 
 ## 日志的打印
-调试日志是程序中一个比较重要的一部分。通常，我们在开发程序的时候，会直接使用 `printf()` 或 `std::cout`,`std::cerr` 在终端上打印日志。但这样打印，有很多不足：1）面日志格式混乱；2）能提供的调试信息不够充分；3）输出的方式太过单一；4）没有日志等级筛选功能。  
-因此，我们会去寻找开源的日志系统库，如：spdlog, glog, log4cxx，来满足日志打印需求。  
-
-好在，当你使用 tbox.main 框架时，你根本就不需要为日志打印而发愁，因为它自带日志打印系统。你直接用就可以了。其它的不需要你关心。  
-
-日志等级有：  
-|值|等级|名称|显示颜色|
-|:-|:-|:-|:-|
-|0|FATAL|代码错误|暗红|
-|1|ERROR|错误|红|
-|2|WARN|警告|黄|
-|3|NOTICE|注意|淡黄|
-|4|INFO|信息|绿|
-|5|DEBUG|调试|淡蓝|
-|6|TRACE|跟踪|紫|
-
-日志打印函数有：  
-|函数|等级|用途|
-|:-|:-|:-|
-|`LogFatal(fmt,...)`|FATAL|打印程序代码级的错误，比如：程序崩馈，通常不会使用到|
-|`LogErr(fmt,...)`|ERROR|打印导致业务完全不可用的严重错误。区别于FATAL，指的是非程序级错误，比如配置文件打不开|
-|`LogWarn(fmt,...)`|WARN|打印影响部分功能的错误。区别于ERROR，这种错误不整响主要功能|
-|`LogNotice(fmt,...)`|NOTICE|打印外部因素引起的轻微异常，这种异常不会影响功能，但需要注意。如对方的协议格式错误、版本不一致|
-|`LogInfo(fmt,...)`|INFO|打印与外部交互的信息，用于鉴别问题是外部的，还是内部的|
-|`LogDbg(fmt,...)`|DEBUG|打印内部模块之间的信息，用于鉴别问题是属于内部的哪个模块的|
-|`LogTrace(fmt,...)`|TRACE|打印临时查问题所需的日志信息|
-|`LogUndo()`|NOTICE|标记有未实现的功能，通用创建一个空函数时，就会放置一个LogUndo()|
-|`LogTag()`|TRACE|用于打印运行标记，观察程序有没有运行过标记位置|
-|`LogPrintf(level,fmt,...)`||在参数中指定等级打印格式化日志|
-|`LogPuts(level,text)`||在参数中指定等级打印字符串日志|
-
-详见 [log.h](https://gitee.com/cpp-master/cpp-tbox/blob/master/modules/base/log.h)
-
-下面，我们来实际操作一下，在MyModule的onInit()尝试所有的日志打印函数：  
-![](images/012-log-print-code.png)
-
-[示例工程目录](06-log-print/)  
-
-编译执行效果：  
-![日志打印效果](images/011-log-print.png)
-
-只要运行，我们就能在终端上就可以看到日志打印了。  
-与常规的日志打印一样，一条日志记录打印一行。每一条记录都有以下信息：  
-![日志字段](images/013-log-field.png)  
-日志的时间点精确到微秒，有线程号，函数名、文件及行号，对调试非常有帮助。
-
-Q: 日志除了打印到终端，还能输出到别的地方吗？  
-A: 日志系统有三种输出方式：stdout(终端)、syslog、file。在不指定的情况下，默认只输出到stdout。如果需要，可以通过参数分别对这三种输出方式进行配置。这个后面讲参数的时候详细介绍。
+接下来，我们学习如何打印日志。  
+[点击前往](02-add-log-tag.md)
 
 ## 事件驱动模式的编程
 在上面的教程中，我们创建了第一个自己模块`MyModule`，我们只需要重写它的`onInit()`,`onStart()`,`onStop()`,`onCleanup()`就可以实现所有的业务功能。这对第一次接触网络编程的同学会比较陌生。  

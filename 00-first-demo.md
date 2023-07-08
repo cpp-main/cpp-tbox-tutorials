@@ -1,3 +1,4 @@
+# 第一个程序
 
 创建自己的工程目录 00-first-demo，再在该目录下创建 Makefile 文件，内容如下:
 ```Makefile

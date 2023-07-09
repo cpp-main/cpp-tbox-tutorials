@@ -60,6 +60,8 @@ OK，我们将http的示例copy过来，在其原有基础上进行修改：
 - `const Session &s`，会话对象，每个连接都是独立的。我们可以使用它的 `send(const std::string &txt)` 方法可以向终端回复内容；
 - `const Args &a`，参数列表，本质上就是 `std::vector<std::string>`。需要说明的是：`a[0]` 永远是命令本身，后之才是参数内容。
 
+[示例工程目录](12-terminal)
+
 编译后运行，再使用 telnet 登陆上去进行操作：  
 ![](038-http-server-terminal.png)  
 使用浏览器也可以访问到：  

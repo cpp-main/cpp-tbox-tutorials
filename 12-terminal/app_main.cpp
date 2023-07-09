@@ -12,8 +12,6 @@ class MyModule : public tbox::main::Module {
 
   public:
     virtual bool onInit(const tbox::Json &js) override {
-        initShell();
-
         if (!http_server_.initialize(tbox::network::SockAddr::FromString("0.0.0.0:12345"), 2))
             return false;
 
@@ -24,6 +22,7 @@ class MyModule : public tbox::main::Module {
             }
         );
 
+        initShell();
         return true;
     }
     virtual bool onStart() override {

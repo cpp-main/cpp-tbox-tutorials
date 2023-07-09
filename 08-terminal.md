@@ -26,7 +26,7 @@
 ## 常规操作
 在 terminal 中有几个内置的命令，执行 help 命令可以看到：  
 ![](images/036-terminal-help.png)  
-这些指令的功能与Linux对应的命令类似。最常用的有：ls, cd, tree, exit。大家可以逐一尝试执行一下。
+这些指令的功能与Linux对应的命令类似。最常用的有：ls, cd, tree, exit。大家可以逐一尝试执行一下。  
 ![](images/037-use-terminal.png)  
 它非常像Linux的Shell，符合了Linux的开发者的习惯。
 

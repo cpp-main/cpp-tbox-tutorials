@@ -24,13 +24,96 @@
 如果机器上没有 telnet 命令，还可以使用 nc 命令替代。主要功能一样，仅仅在体验上没有上下切换历史命令的功能。  
 ![](images/035-use-nc-login-telnetd.png)  
 
+## 常规操作
 在 terminal 中有几个内置的命令，执行 help 命令可以看到：  
 ![](images/036-terminal-help.png)  
 这些指令的功能与Linux对应的命令类似。最常用的有：ls, cd, tree, exit。大家可以逐一尝试执行一下。
+![](images/037-use-terminal.png)  
+可以看到 terminal 很好用。
 
 ## 实现自定义命令
+接下来，我们来尝试往上面添加自己的命令。  
+还是回到之前 HTTP 的示例上来。我们现在想实现HTTP返回的内容可通过终端进行查看与修改的功能。在终端的根目录下创建 my_http 目录，再在这个子目录下创建两个命令：print_content 与 set_content，功能顾名思义。像这样：  
+```
+`-- my_http
+    |-- print_content
+    `-- set_content
+```
+OK，我们将http的示例copy过来，在其基础上修改：  
+![](040-http-server-terminal-code.png)  
+
+(1) 引入与终端相关的头文件；  
+(2) 添加 `content_` 成员变量；  
+(3) 修改 http 的响应函数，使之将 `content_` 作为回复内容；  
+(4) 调用 `initShell()` 函数，对终端进行初始化；  
+(5) 实现 `initShell()` 函数的内容；  
+
+在 `initShell()` 中：  
+(1) 创建一个DirNode，并将它挂载到 "/" 目录上，命名为 "my_http"；  
+(2) 创建一个FuncNode，并将它挂载到 "/my_http" 目录下，命名为 "print_content"；  
+(3) 创建一个FuncNode，并将它挂载到 "/my_http" 目录下，命名为 "set_content"；  
+
+其中在执行 `createFuncNode()` 时，需要传入一个函数对象。该函数对像需要传入两个参数：  
+![](images/041-terminal-args.png)  
+
+- `const Session &s`，会话对象，每个连接都是独立的。我们可以使用它的 `send(const std::string &txt)` 方法可以向终端回复内容；
+- `const Args &a`，参数列表，本质上就是 `std::vector<std::string>`。需要说明的是：`a[0]` 永远是命令本身，后之才是参数内容。
+
+编译后运行，再使用 telnet 登陆上去进行操作：  
+![](038-http-server-terminal.png)  
+使用浏览器也可以访问到：  
+![](039-http-server-terminal-2.png)
 
 ## 内置命令介绍
+为了方便使用，tbox.main默认内置一些命令。方便使用者在运行时进行操控。  
+在根目录下执行 `tree` 命令，终端会打印命令的树形结构。下面为本人在打印内容的基础上加了部分备注的内容：  
+```shell
+# tree
+|-- ctx # ctx 相关
+|   |-- loop # 主事件循环相关
+|   |   |-- stat # 统计
+|   |   |   |-- print # 打印统计
+|   |   |   `-- reset # 重新开始统计
+|   |   `-- wl   # 警告水位线（用于检查事件循环中是否存在阻塞）
+|   |       |-- event_cb_cost          # 事件回调耗时阈值
+|   |       |-- loop_cost              # Loop处理耗时阈值
+|   |       |-- run_cb_cost            # 执行runNext(),runInLoop()与run()耗时阈值
+|   |       |-- run_in_loop_delay      # runInLoop() 执行延迟阈值
+|   |       |-- run_in_loop_queue_size # runInLoop() 最大排队等待长度
+|   |       |-- run_next_delay         # runNext() 执行延迟阈值
+|   |       |-- run_next_queue_size    # runNext() 最大排队等待长度
+|   |       |-- timer_delay            # 定时器延迟阈值
+|   |       `-- wake_delay             # 唤配延迟阈值
+|   |-- running_time # 打印进程运行时长
+|   |-- start_time   # 打印进程启动时间点
+|   `-- thread_pool  # 线程池相关
+|       `-- snapshot # 状态快照
+|-- info # 信息打印
+|   |-- app_ver    # 打印App版本信息，根据 GetAppVersion()
+|   |-- build_time # 打印编译时间，根据 GetAppBuildTime()
+|   |-- tbox_ver   # 打印Tbox版本信息，根据 GetTboxVersion()
+|   `-- what       # 打印App描述信息，根据 GetAppDescribe()
+`-- log  # 日志输出相关
+    |-- file # 打印到文件的日志
+    |   |-- enable       # 是否启用
+    |   |-- enable_color # 是否根据日志等级渲染颜色
+    |   |-- enable_sync  # 是否强制写入到存储器（部分文件系统会在内核中缓存，导致突然断电出现日志丢失情况）
+    |   |-- set_level    # 指定模块的输出等级
+    |   |-- set_max_size # 指定日志文件最大大小
+    |   |-- set_path     # 指定日志文件的创建路径
+    |   |-- set_prefix   # 指定日志文件的前缀
+    |   `-- unset_level  # 与set_level对应，删除指定模块的日志等级
+    |-- stdout # 打印到标准终端的日志
+    |   |-- enable       # 是否启用
+    |   |-- enable_color # 是否根据日志等级渲染颜色
+    |   |-- set_level    # 指定模块的输出等级
+    |   `-- unset_level  # 与set_level对应，删除指定模块的日志等级
+    `-- syslog # 打印到syslog的日志
+        |-- enable       # 是否启用
+        |-- enable_color # 是否根据日志等级渲染颜色
+        |-- set_level    # 指定模块的输出等级
+        `-- unset_level  # 与set_level对应，删除指定模块的日志等级
+```
 
 ## RPC接口
 

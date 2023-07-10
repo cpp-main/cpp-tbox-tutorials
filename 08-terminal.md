@@ -41,7 +41,7 @@
 ```
 
 OK，我们将http的示例copy过来，在其原有基础上进行修改：  
-![](040-http-server-terminal-code.png)  
+![](images/040-http-server-terminal-code.png)  
 
 (1) 引入与终端相关的头文件；  
 (2) 添加 `content_` 成员变量；  
@@ -63,9 +63,9 @@ OK，我们将http的示例copy过来，在其原有基础上进行修改：
 [示例工程目录](12-terminal)
 
 编译后运行，再使用 telnet 登陆上去进行操作：  
-![](038-http-server-terminal.png)  
+![](images/038-http-server-terminal.png)  
 使用浏览器也可以访问到：  
-![](039-http-server-terminal-2.png)
+![](images/039-http-server-terminal-2.png)
 
 ## 内置命令介绍
 为了方便使用，tbox.main 已内置了一些常用的命令，方便使用者在运行时进行操控。  

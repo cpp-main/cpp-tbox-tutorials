@@ -13,7 +13,7 @@
 
 在没有 terminal 之前，我使用最多的是方法二。每写一个程序，我都得建一张 cmd --> function 的表。一个命令对应一个函数。每当TCP接收到字串后，就从字串中提取出cmd与参数。再通过cmd从表中找出对应的 function，去执行对应的函数。这样的交互并不那么友好，也不具备很强的通用性。于是，我参考了 telnet 的交互协议，开发了 terminal 模块，并集成到了 tbox.main 框架中。从此 tbox.main 具备了调试终端的功能。  
 效果如下：  
-![](images/034-terminal-show.gif)  
+![](images/043-terminal-show.png)  
 
 ## 使能终端
 默认情况下，命令终端并未启用，需要我们通过配置将其打开：`./demo -s 'telnetd.bind="0.0.0.0:10000"'`  

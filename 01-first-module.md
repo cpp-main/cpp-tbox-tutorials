@@ -35,16 +35,14 @@ void RegisterApps(Module &apps, Context &ctx) {
 但是，单从日志上看，我们并不能看出我们写的 MyModule 有真的运行起来。  
 接下来，我们再往 `MyModule` 中添加自定义的功能。让它在运行的过程中打印一点日志。    
 
-[示例工程目录](02-first-module)  
-
 ```c++
 class MyModule : public tbox::main::Module {
   public:
     explicit MyModule(tbox::main::Context &ctx) : tbox::main::Module("my", ctx) { }
-    virtual ~MyModule() { }
 
-    virtual bool onInit() override { LogTag(); }
-    virtual bool onStart() override { LogTag(); }
+  public:
+    virtual bool onInit(const tbox::Json &js) override { LogTag(); return true; }
+    virtual bool onStart() override { LogTag(); return true; }
     virtual void onStop() override { LogTag(); }
     virtual void onCleanup() override { LogTag(); }
 };
@@ -55,6 +53,8 @@ class MyModule : public tbox::main::Module {
 完成之后执行 `make`。在编译的时侯，我们看到了一条编译警告:   
 ![没有指定LOG\_MODULE\_ID警告](images/004-compile-warn.png)  
 它是在说我们程序没有指定日志的模块名。这仅是一条警告，我们可以忽略它。不过，我建议你在 Makefile 的`CXXFLAGS`定义中添加`-DLOG_MODULE_ID='"demo"'` 进行定义。  
+
+[示例工程目录](02-add-log-tag)  
 
 编译后执行，然后按 ctrl+c 退出程序，完整的日志打印效果:  
 ![运行效果图](images/003-your-first-module-with-log.png)    

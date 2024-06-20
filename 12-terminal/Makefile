@@ -7,6 +7,7 @@ LDFLAGS:=-L$(HOME)/.tbox/lib -rdynamic
 LIBS:=\
 	-ltbox_http \
 	-ltbox_main \
+	-ltbox_trace \
 	-ltbox_terminal \
 	-ltbox_network \
 	-ltbox_eventx \

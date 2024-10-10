@@ -4,6 +4,7 @@ CXXFLAGS:=-I$(HOME)/.tbox/include
 LDFLAGS:=-L$(HOME)/.tbox/lib -rdynamic
 LIBS:=\
 	-ltbox_main \
+	-ltbox_coroutine \
 	-ltbox_trace \
 	-ltbox_terminal \
 	-ltbox_network \

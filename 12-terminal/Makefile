@@ -2,7 +2,7 @@ TARGET:=demo
 
 OBJECTS:=app_main.o
 
-CXXFLAGS:=-I$(HOME)/.tbox/include -DLOG_MODULE_ID='"demo"'
+CXXFLAGS:=-I$(HOME)/.tbox/include -DLOG_MODULE_ID='"demo"' -std=c++11
 LDFLAGS:=-L$(HOME)/.tbox/lib -rdynamic
 LIBS:=\
 	-ltbox_http \

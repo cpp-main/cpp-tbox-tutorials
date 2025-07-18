@@ -12,6 +12,7 @@ class MyModule : public tbox::main::Module {
         LogErr("this is error log");
         LogWarn("this is warn log");
         LogNotice("this is notice log");
+        LogImportant("this is important log");
         LogInfo("this is info log");
         LogDbg("this is debug log");
         LogTrace("this is trace log");

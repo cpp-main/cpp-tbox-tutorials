@@ -24,9 +24,9 @@ void RegisterApps(Module &apps, Context &ctx) {
 }
 ```
 然后再修改 Makefile，将 app\_main.cpp 加入到源文件中。  
-见：[Makefile](01-first-module/Makefile)  
+见：[Makefile](examples/01-first-module/Makefile)  
 
-[示例工程目录](01-first-module)  
+[示例工程目录](examples/01-first-module)  
 
 编译执行:`make && ./demo`，运行结果:  
 ![运行效果图](images/002-your-first-module-1.png)   
@@ -52,9 +52,9 @@ class MyModule : public tbox::main::Module {
 为了能使用`LogTag()`日志打印函数，我们还需要添加`#include <tbox/base/log.h>`。  
 完成之后执行 `make`。在编译的时侯，我们看到了一条编译警告:   
 ![没有指定LOG\_MODULE\_ID警告](images/004-compile-warn.png)  
-它是在说我们程序没有指定日志的模块名。这仅是一条警告，我们可以忽略它。不过，我建议你在 Makefile 的`CXXFLAGS`定义中添加`-DLOG_MODULE_ID='"demo"'` 进行定义。  
+它是在说我们程序没有指定日志的模块名。这仅是一条警告，我们可以忽略它。不过，我建议你在 Makefile 的`CXXFLAGS`定义中添加`-DMODULE_ID='"demo"'` 进行定义。  
 
-[示例工程目录](02-add-log-tag)  
+[示例工程目录](examples/02-add-log-tag)  
 
 编译后执行，然后按 ctrl+c 退出程序，完整的日志打印效果:  
 ![运行效果图](images/003-your-first-module-with-log.png)    

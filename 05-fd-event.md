@@ -12,7 +12,7 @@
 ![代码](images/016-fdevent-code.png)  
 在(9)处定义了接收到stdin输入的处理过程。首先，检查一下是不是可读事件，如果是才处理。然后读0文件描述符，即stdin。将数据读到`buff`缓冲中。最后，根据输入的内容进行处理。
 
-[示例工程目录](08-fd-event)
+[示例工程目录](examples/08-fd-event)
 
 编译执行效果：  
 ![结果](images/017-fdevent-result.png)  

@@ -12,7 +12,7 @@
 为了演示，我们写一个非常简单的http服务程序，当我们访问它的时候，显示hello页面。  
 ![http代码](images/023-tiny-http-code.png)  
 
-[示例程序目录](10-tiny-http-server)
+[示例程序目录](examples/10-tiny-http-server)
 
 编译执行，使用 curl 测试，结果如下：  
 ![http结果](images/024-tiny-http-result.png)  

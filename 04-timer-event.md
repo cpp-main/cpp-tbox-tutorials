@@ -22,7 +22,7 @@
 (8) 在 `onStart()` 中启动定时器；  
 (9) 在 `onStop()` 中停止定时器；  
 
-[示例工程目录](07-timer-event)  
+[示例工程目录](examples/07-timer-event)  
 
 编译后，执行效果：
 ![](images/015-timer-result.png)  

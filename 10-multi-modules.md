@@ -28,7 +28,7 @@
     └── module.h
 ```
 
-[示例工程目录](05-two-modules)
+[示例工程目录](examples/05-two-modules)
 
 构建后运行：  
 ![多Module在同一进程运行效果](images/009-two-modules.png)

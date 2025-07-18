@@ -12,7 +12,7 @@ $(TARGET):
 	g++ -o $(TARGET) $(LDFLAGS) $(LIBS)
 ```
 
-[示例工程目录](00-first-demo)
+[示例工程目录](examples/00-first-demo)
 
 然后执行 `make && ./demo`，效果:  
 ![执行效果](images/000-first-demo.png)

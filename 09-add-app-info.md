@@ -7,7 +7,7 @@
 ![添加代码](images/006-add-code.png)  
 上面定义了三个函数：`GetAppDescribe()`、`GetAppVersion()`、`GetAppBuildTime()`，分析用于告析 tbox.main 框架当前应用的描述、版本号、编译时间点。  
 
-[完整示例代码](03-add-app-info)
+[完整示例代码](examples/03-add-app-info)
 
 重新构建，再次执行 `./demo -v; ./demo -h` 效果：  
 ![](images/007-has-desc.png)
@@ -34,7 +34,7 @@
     └── module.h
 ```
 
-[示例工程目录](04-normal-app-demo)
+[示例工程目录](examples/04-normal-app-demo)
 
 建议：在 my/ 目录下的所有代码，均以 `my` 作为顶层命名空间，以防在下一节的多Module情况下，命名空间污染。  
 
